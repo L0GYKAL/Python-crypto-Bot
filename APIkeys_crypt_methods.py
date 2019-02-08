@@ -1,8 +1,9 @@
 from Crypto.Cipher import AES  # pip install pycrypto
 import base64
+import getpass
 
 def askPassword():
-	MDP=input('Mot de passe:')
+	MDP=getpass.getpass(prompt='Password:')
 	return MDP
 
 def cypher_aes(secret_key, msg_text, encrypt=True):
