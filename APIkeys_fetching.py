@@ -13,6 +13,10 @@ def fetch_APIkeys(filename="APIkeys.json"):
         line_file= line_file + line
         return line_file
 
+def write_APIkeys(filename="APIkeys.json"):
+    with open(filename, 'w') as f:
+        crypt_dictionnary=cypher_aes(MDP, decrypt_dictionnary, encrypt=True)
+        f.writelines(crypt_dictionnary)
 
 
 
@@ -43,8 +47,24 @@ def cypher_aes(secret_key, msg_text, encrypt=True):
     return cipher.decrypt(base64.b64decode(modified_text)).strip()
 
 
+#MANAGE apikeys
+def add_APIkeys(exchangeName, exchange, publicKey, secretKey, dictionnary=decrypt_dictionnary): # les paramètres sont des strings
+	if exchangeName not in dictionnary:
+    		dictionnary[exchangeName]=[exchange,publicKey, secretKey]
+	else:
+    		print('This exchange already exist.')
+	write_APIkeys(dictionnary)
 
-def main():
+def del_APIkeys(exchangeName, dictionnary=decrypt_dictionnary):
+	try:
+    		del dictionnary[exchangeName]
+	except KeyError:
+    		print('There is no exchange named: '+ exchangeName)
+    	write_APIkeys(dictionnary)
+
+
+
+def decrypt_APIKeys():
     askPassword()
     decrypt_dictionnary=cypher_aes(MDP, fetch_APIkeys(filename="APIkeys.json"), encrypt=True)
     APIkeys=json.dumps(decrypt_dictionnary)
