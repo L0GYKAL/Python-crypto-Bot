@@ -40,6 +40,8 @@ def cypher_aes(secret_key, msg_text, encrypt=True):
     if encrypt:
         return base64.b64encode(cipher.encrypt(modified_text)).strip()
 
+    return cipher.decrypt(base64.b64decode(modified_text)).strip()
+
 
 
 def main():
