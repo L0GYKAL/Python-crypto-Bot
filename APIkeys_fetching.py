@@ -69,5 +69,4 @@ def del_APIkeys(exchangeName, dictionnary=decrypt_dictionnary):
 
 def decrypt_APIKeys():
     askPassword()
-    decrypt_dictionnary=cypher_aes(MDP, fetch_APIkeys(filename="APIkeys.json"), encrypt=False)
-    APIkeys=json.dumps(decrypt_dictionnary)
+    decrypt_dictionnary=json.dumps(cypher_aes(MDP, fetch_APIkeys(filename="APIkeys.json"), encrypt=False))
