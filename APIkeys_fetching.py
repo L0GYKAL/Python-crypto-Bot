@@ -8,10 +8,15 @@ MDP=''
 
 def fetch_APIkeys(filename="APIkeys.json"):
     global decrypt_dictionnary
+if os.path.isfile(filename):
     with open(filename, 'r') as f:
         for line in f:
         line_file= line_file + line
         return line_file
+else:
+    myfile = open(filename, 'a')
+    myfile.close()
+	return cypher_aes(MDP, '{}', encrypt=True)
 
 def write_APIkeys(filename="APIkeys.json"):
     with open(filename, 'w') as f:
@@ -31,13 +36,11 @@ def cypher_aes(secret_key, msg_text, encrypt=True):
     # in this case we make sure the key is 32 bytes long by adding padding and/or slicing if necessary
     remainder = len(secret_key) % 16
     modified_key = secret_key.ljust(len(secret_key) + (16 - remainder))[:32]
-    print(modified_key)
 
     # input strings must be a multiple of 16 in length
     # we achieve this by adding padding if necessary
     remainder = len(msg_text) % 16
     modified_text = msg_text.ljust(len(msg_text) + (16 - remainder))
-    print(modified_text)
 
     cipher = AES.new(modified_key, AES.MODE_ECB)  # use of ECB mode in enterprise environments is very much frowned upon
 
@@ -66,5 +69,5 @@ def del_APIkeys(exchangeName, dictionnary=decrypt_dictionnary):
 
 def decrypt_APIKeys():
     askPassword()
-    decrypt_dictionnary=cypher_aes(MDP, fetch_APIkeys(filename="APIkeys.json"), encrypt=True)
+    decrypt_dictionnary=cypher_aes(MDP, fetch_APIkeys(filename="APIkeys.json"), encrypt=False)
     APIkeys=json.dumps(decrypt_dictionnary)
