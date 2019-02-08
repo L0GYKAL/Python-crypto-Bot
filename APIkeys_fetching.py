@@ -2,6 +2,7 @@ from Crypto.Cipher import AES  # pip install pycrypto
 import base64
 import getpass
 import json
+import os
 
 decrypt_dictionnary=''
 MDP=''
