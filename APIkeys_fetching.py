@@ -4,33 +4,34 @@ import getpass
 import json
 import os
 
-decrypt_dictionnary=''
-MDP=''
+decrypt_dictionnary = ''
+MDP = ''
+
 
 def fetch_APIkeys(filename="APIkeys.json"):
     global decrypt_dictionnary
-if os.path.isfile(filename):
-    with open(filename, 'r') as f:
-        for line in f:
-        line_file= line_file + line
-        return line_file
-else:
-    myfile = open(filename, 'a')
-    myfile.close()
-	return cypher_aes(MDP, '{}', encrypt=True)
+    if os.path.isfile(filename):
+        with open(filename, 'r') as f:
+            line_file=''
+            for line in f:
+                line_file = line_file + line
+            return line_file
+    else:
+        myfile = open(filename, 'a')
+        myfile.close()
+        return cypher_aes(MDP, '{}', encrypt=True)
+
 
 def write_APIkeys(filename="APIkeys.json"):
     with open(filename, 'w') as f:
-        crypt_dictionnary=cypher_aes(MDP, decrypt_dictionnary, encrypt=True)
+        crypt_dictionnary = cypher_aes(MDP, decrypt_dictionnary, encrypt=True)
         f.writelines(crypt_dictionnary)
-
-
-
 
 
 def askPassword():
     global MDP
-	MDP=getpass.getpass(prompt='Password:')
+    MDP = getpass.getpass(prompt='Password:')
+
 
 def cypher_aes(secret_key, msg_text, encrypt=True):
     # an AES key must be either 16, 24, or 32 bytes long
@@ -43,7 +44,8 @@ def cypher_aes(secret_key, msg_text, encrypt=True):
     remainder = len(msg_text) % 16
     modified_text = msg_text.ljust(len(msg_text) + (16 - remainder))
 
-    cipher = AES.new(modified_key, AES.MODE_ECB)  # use of ECB mode in enterprise environments is very much frowned upon
+    # use of ECB mode in enterprise environments is very much frowned upon
+    cipher = AES.new(modified_key, AES.MODE_ECB)
 
     if encrypt:
         return base64.b64encode(cipher.encrypt(modified_text)).strip()
@@ -51,23 +53,38 @@ def cypher_aes(secret_key, msg_text, encrypt=True):
     return cipher.decrypt(base64.b64decode(modified_text)).strip()
 
 
-#MANAGE apikeys
-def add_APIkeys(exchangeName, exchange, publicKey, secretKey, dictionnary=decrypt_dictionnary): # les paramètres sont des strings
-	if exchangeName not in dictionnary:
-    		dictionnary[exchangeName]=[exchange,publicKey, secretKey]
-	else:
-    		print('This exchange already exist.')
-	write_APIkeys(dictionnary)
+# MANAGE apikeys
+# les paramètres sont des strings
+def add_APIkeys(exchangeName, exchange, publicKey, secretKey, dictionnary=decrypt_dictionnary):
+    """Permet de vérifier si l'exchange existe déjà ou pas 
+    et ajouter l'exchange au dictionnaire puis l'écrire dans le dictionnaire crypté"""
+    if exchangeExist(exchangeName, exchange, publicKey, secretKey):
+        print('This exchange already exist.')
+    else:
+        dictionnary[exchangeName] = [exchange, publicKey, secretKey]
+        write_APIkeys()
+
 
 def del_APIkeys(exchangeName, dictionnary=decrypt_dictionnary):
-	try:
-    		del dictionnary[exchangeName]
-	except KeyError:
-    		print('There is no exchange named: '+ exchangeName)
-    	write_APIkeys(dictionnary)
-
+    try:
+        del dictionnary[exchangeName]
+    except KeyError:
+        print('There is no exchange named: ' + exchangeName)
+    write_APIkeys(dictionnary)
 
 
 def decrypt_APIKeys():
+    global decrypt_dictionnary
     askPassword()
-    decrypt_dictionnary=json.dumps(cypher_aes(MDP, fetch_APIkeys(filename="APIkeys.json"), encrypt=False))
+    decrypt_dictionnary = json.dumps(cypher_aes(
+        MDP, fetch_APIkeys(filename="APIkeys.json"), encrypt=False))
+
+
+def exchangeExist(exchangeName, exchange, publicKey, secretKey):
+    """regarde si l'exchange existe déjà, en regardant si les nom donné par l'utilisateur 
+    existe déjà et si le couple clé privée et clé publique existe déjà"""
+    global decrypt_dictionnary
+    for exchangeNames, data in decrypt_dictionnary.items():
+        if exchangeNames == exchangeName or (data[2] == secretKey and data[1] == publicKey and data[0] == exchange):
+            return True
+    return False
