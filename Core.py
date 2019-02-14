@@ -2,15 +2,15 @@ import APIkeys_fetching.py
 import ccxt
 
 exchanges=[]
-def openExchange():
+def openExchanges():
   global exchanges
   for exchange, data in decrypt_dictionnary.items():
-    exchanges.append(
-    exec(“exchanges.append(%s = %d.%e)” %(data[0], 'ccxt',data[0]))
+    exec(“exchanges.append(%s = %d.%e(%f,%g))” %(data[0], 'ccxt', data[0], data[1], data[2]))
 
 
 
 def main():
+  openExchanges()
   for exchange in exchanges:
     exchange.fetchBalance
     exchange.fetchMyTrades
