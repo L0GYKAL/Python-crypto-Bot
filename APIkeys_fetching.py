@@ -89,3 +89,6 @@ class APIkeys:
             if ((exchangeNames == exchangeName) or (data[2] == secretKey and data[1] == publicKey and data[0] == exchange)):
                 return True
         return False
+    
+    def get(self):
+        return self.decrypt_dictionnary
