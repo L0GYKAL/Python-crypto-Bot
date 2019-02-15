@@ -1,4 +1,5 @@
-from Crypto.Cipher import AES  # pip install pycrypto
+from Crypto.Cipher import AES, ARC2, ARC4  # pip install pycrypto
+import hashlib # pip install hashlib
 import base64  # pip install base64
 import json
 import os
@@ -6,16 +7,20 @@ import os
 
 class APIkeys:
 
-    def __init__(self):
+    def __init__(self, Pass):
         self.exchanges = []
         self.decrypt_dictionnary = ''
-        self.Pass = ''
+        self.Pass = Pass
         self.fileName = 'APIkeys.json'
-        self.fetch_APIkeys()
+        self.checksum= ''
+        self.decrypt_APIKeys()
 
     def run(self, Pass):#methode used to decrypt the keys with a password
-        self.Pass = Pass
-        self.fetch_APIkeys()
+        if self.checksum():
+            self.fetch_APIkeys()
+        else:
+            print ('Wrong Password')
+        
 
     def fetch_APIkeys(self):
         if os.path.isfile(self.fileName):
@@ -49,11 +54,13 @@ class APIkeys:
 
         # use of ECB mode in enterprise environments is very much frowned upon
         cipher = AES.new(modified_key, AES.MODE_ECB)
+        ARC2obj=ARC2.new(modified_key + modified_key )
+		ARC4obj=ARC4.new(modified_key + modified_key + modified_key)
 
         if encrypt:
-            return base64.b64encode(cipher.encrypt(modified_text)).strip()
+            return base64.b64encode(ARC4obj.encrypt(ARC2obj.encrypt(AESobj.encrypt(modified_text)))).strip()
 
-        return cipher.decrypt(base64.b64decode(modified_text)).strip()
+        return AESobj.decrypt(ARC2obj.decrypt(ARC4obj.decrypt(base64.b64decode(modified_text)))).strip()
 
     # MANAGE apikeys
     # les paramètres sont des strings
@@ -87,7 +94,7 @@ class APIkeys:
 
     def decrypt_APIKeys(self):
         self.decrypt_dictionnary = json.dumps(self.cypher_aes(
-            self.MDP, self.fetch_APIkeys(self.fileName), encrypt=False))
+            self.MDP, self.fetch_APIkeys(self), encrypt=False))
 
     def exchangeExist(self, exchangeName='', exchange='', publicKey='', secretKey=''):
         """regarde si l'exchange existe déjà, en regardant si les nom donné par l'utilisateur
@@ -99,3 +106,7 @@ class APIkeys:
 
     def get(self):  # la methode get à été créée pour garder l'encapsulation dans la programmation orientée objet
         return self.decrypt_dictionnary
+    
+    def checksum(self):
+        if hashlib.sha224(self.Pass).hexdigest() == self.Checksum:
+            
