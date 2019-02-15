@@ -12,12 +12,13 @@ class APIkeys:
         self.decrypt_dictionnary = ''
         self.Pass = Pass
         self.fileName = 'APIkeys.json'
-        self.checksum= ''
+        with open('Checksum.txt', 'r') as f:
+            self.Checksum=f.readline()
         self.decrypt_APIKeys()
 
     def run(self, Pass):#methode used to decrypt the keys with a password
         if self.checksum():
-            self.fetch_APIkeys()
+            self.decrypt_APIKeys()
         else:
             print ('Wrong Password')
         
@@ -108,5 +109,10 @@ class APIkeys:
         return self.decrypt_dictionnary
     
     def checksum(self):
-        if hashlib.sha224(self.Pass).hexdigest() == self.Checksum:
+        if self.Checksum == '':
+            return True
+        elif hashlib.sha224(self.Pass).hexdigest() == self.Checksum:
+            return True
+        else:
+            return False
             
