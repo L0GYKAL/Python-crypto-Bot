@@ -90,5 +90,5 @@ class APIkeys:
                 return True
         return False
     
-    def get(self):
+    def get(self):  #la methode get à été créée pour garder l'encapsulation dans la programmation orientée objet
         return self.decrypt_dictionnary
