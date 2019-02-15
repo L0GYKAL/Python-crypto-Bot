@@ -13,10 +13,7 @@ class APIkeys:
         self.fileName = 'APIkeys.json'
         self.fetch_APIkeys()
 
-        # def askPassword(self):
-        #self.Pass = getpass.getpass(prompt='Password:')
-
-    def run(self, Pass):
+    def run(self, Pass):#methode used to decrypt the keys with a password
         self.Pass = Pass
         self.fetch_APIkeys()
 
