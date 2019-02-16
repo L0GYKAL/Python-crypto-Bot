@@ -1,5 +1,5 @@
 from Crypto.Cipher import AES, ARC2, ARC4  # pip install pycrypto
-import hashlib # pip install hashlib
+import hashlib  # pip install hashlib
 import base64  # pip install base64
 import json
 import os
@@ -12,34 +12,35 @@ class APIkeys:
         self.decrypt_dictionnary = ''
         self.Pass = Pass
         self.fileName = 'APIkeys.json'
-        with open('Checksum.txt', 'r') as f:
-            self.Checksum=f.readline()
-        self.decrypt_APIKeys()
+        self.Checksum = ''
 
-    def run(self, Pass):#methode used to decrypt the keys with a password
-        if self.checksum():
+    def run(self, Pass):  # methode used to decrypt the keys with a password, Password should never be void
+        if self.checksum() == True:
+            self.Pass = Pass
             self.decrypt_APIKeys()
+        elif self.checksum() == 'new':
+            self.decrypt_dictionnary = {}
         else:
-            print ('Wrong Password')
-        
+            print('Wrong Password')
 
     def fetch_APIkeys(self):
         if os.path.isfile(self.fileName):
             with open(self.fileName, 'r') as f:
-                line_file = ''
-                for line in f:
-                    line_file = line_file + line
-                return line_file
+                line = f.readlines()
+                self.checksum = str(line[1]).strip('\n')
+            return str(line[0]).strip('\n')
         else:
             myfile = open(self.fileName, 'a')
             myfile.close()
             return self.cypher_aes(self.Pass, '{}', encrypt=True)
 
     def write_APIkeys(self):
+        crypt_lines = []
         with open(self.fileName, 'w') as f:
-            crypt_dictionnary = self.cypher_aes(
+            crypt_lines[0] = self.cypher_aes(
                 self.Pass, self.decrypt_dictionnary, encrypt=True)
-            f.writelines(crypt_dictionnary)
+            crypt_lines[1] = self.Checksum
+            f.writelines(str(line) + "\n" for line in crypt_lines)
 
     def cypher_aes(secret_key, msg_text, encrypt=True):
         # an AES key must be either 16, 24, or 32 bytes long
@@ -54,9 +55,9 @@ class APIkeys:
         modified_text = msg_text.ljust(len(msg_text) + (16 - remainder))
 
         # use of ECB mode in enterprise environments is very much frowned upon
-        cipher = AES.new(modified_key, AES.MODE_ECB)
-        ARC2obj=ARC2.new(modified_key + modified_key )
-		ARC4obj=ARC4.new(modified_key + modified_key + modified_key)
+        AESobj = AES.new(modified_key, AES.MODE_ECB)
+        ARC2obj = ARC2.new(modified_key + modified_key)
+        ARC4obj = ARC4.new(modified_key + modified_key + modified_key)
 
         if encrypt:
             return base64.b64encode(ARC4obj.encrypt(ARC2obj.encrypt(AESobj.encrypt(modified_text)))).strip()
@@ -95,7 +96,7 @@ class APIkeys:
 
     def decrypt_APIKeys(self):
         self.decrypt_dictionnary = json.dumps(self.cypher_aes(
-            self.MDP, self.fetch_APIkeys(self), encrypt=False))
+            self.MDP, self.fetch_APIkeys(), encrypt=False))
 
     def exchangeExist(self, exchangeName='', exchange='', publicKey='', secretKey=''):
         """regarde si l'exchange existe déjà, en regardant si les nom donné par l'utilisateur
@@ -107,12 +108,11 @@ class APIkeys:
 
     def get(self):  # la methode get à été créée pour garder l'encapsulation dans la programmation orientée objet
         return self.decrypt_dictionnary
-    
+
     def checksum(self):
         if self.Checksum == '':
-            return True
+            return 'new'
         elif hashlib.sha224(self.Pass).hexdigest() == self.Checksum:
             return True
         else:
             return False
-            
