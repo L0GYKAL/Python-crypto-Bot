@@ -5,6 +5,8 @@ class Exchanges:
     def __init__(self):
         self.exchangesList=[]
         self.APIobject=APIKeys()
+        #demande le mot de passe
+        self.APIobject.run('Mot de Passe')
         self.dictionnary=self.APIobject.get()
 
     def openExchanges(self):
