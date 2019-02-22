@@ -2,6 +2,6 @@
 
 Creating a python bot using ccxt library
 
-APIkeys protected by encryption
+APIkeys protected by AES encryption
 
 And profit saved by stoploss and makeProfit
