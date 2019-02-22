@@ -15,31 +15,39 @@ class APIkeys:
         self.Checksum = ''
 
     def run(self, Pass):  # methode used to decrypt the keys with a password, Password should never be void
-        if self.checksum() == True:
-            self.Pass = Pass
-            self.decrypt_APIKeys()
-        elif self.checksum() == 'new':
-            self.decrypt_dictionnary = {}
+        self.Pass = Pass
+        self.read()
+
+
+def read(self):
+    if os.path.isfile(self.fileName):
+        with open(self.fileName, 'r') as f:
+            lines = f.readlines()
+        self.decrypt(lines[0], lines[1])
+    else:
+        myfile = open(self.fileName, 'a')
+        myfile.close()
+        self.decrypt('', '')
+
+
+def decrypt(self, crypt_dictionnary, crypt_checksum):
+    if (crypt_dictionnary != '' and crypt_checksum != ''):
+        if hashlib.sha224(self.Pass).hexdigest() == self.cypher_aes(self.Pass, crypt_checksum.strip('\n'), encrypt=False):  # Good password
+            self.decrypt_dictionnary = json.dumps(self.cypher_aes(
+                self.Pass, crypt_dictionnary.strip('\n'), encrypt=False))
+            self.checksum = hashlib.sha224(self.Pass).hexdigest()
         else:
             print('Wrong Password')
-
-    def fetch_APIkeys(self):
-        if os.path.isfile(self.fileName):
-            with open(self.fileName, 'r') as f:
-                line = f.readlines()
-                self.checksum = str(line[1]).strip('\n')
-            return str(line[0]).strip('\n')
-        else:
-            myfile = open(self.fileName, 'a')
-            myfile.close()
-            return self.cypher_aes(self.Pass, '{}', encrypt=True)
+    else:
+        self.decrypt_dictionnary = {}
 
     def write_APIkeys(self):
         crypt_lines = []
         with open(self.fileName, 'w') as f:
             crypt_lines[0] = self.cypher_aes(
                 self.Pass, self.decrypt_dictionnary, encrypt=True)
-            crypt_lines[1] = self.Checksum
+            crypt_lines[1] = self.cypher_aes(
+                self.Pass, self.Checksum, encrypt=True)
             f.writelines(str(line) + "\n" for line in crypt_lines)
 
     def cypher_aes(secret_key, msg_text, encrypt=True):
@@ -94,10 +102,6 @@ class APIkeys:
             print('There is no exchange named: ' + exchangeName)
         self.write_APIkeys()
 
-    def decrypt_APIKeys(self):
-        self.decrypt_dictionnary = json.dumps(self.cypher_aes(
-            self.MDP, self.fetch_APIkeys(), encrypt=False))
-
     def exchangeExist(self, exchangeName='', exchange='', publicKey='', secretKey=''):
         """regarde si l'exchange existe déjà, en regardant si les nom donné par l'utilisateur
         existe déjà et si le couple clé privée et clé publique existe déjà"""
@@ -108,11 +112,3 @@ class APIkeys:
 
     def get(self):  # la methode get à été créée pour garder l'encapsulation dans la programmation orientée objet
         return self.decrypt_dictionnary
-
-    def checksum(self):
-        if self.Checksum == '':
-            return 'new'
-        elif hashlib.sha224(self.Pass).hexdigest() == self.Checksum:
-            return True
-        else:
-            return False
