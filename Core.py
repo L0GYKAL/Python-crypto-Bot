@@ -16,6 +16,7 @@ class Exchanges:
 
 
 def main():
+  knownExchenges=Exchanges()
   openExchanges()
   for exchange in exchanges:
     exchange.fetchBalance
