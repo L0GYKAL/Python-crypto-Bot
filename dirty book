@@ -1,72 +1,20 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar  7 18:10:36 2019
+def balances(exchanges: Exchanges):
+    balances=[]
+    for exchange in exchanges.exchangesList:
+        balances.append(exchanges.exchangesList[i].fetchBalance())
 
-@author: LOGYKAL
-"""
 
-import APIkeys_fetching.py
-import ccxt
 
-class Exchanges:
-    def __init__(self):
-        self.exchangesList=generateExchanges()
-        self.APIobject=APIKeys()
-        #demande le mot de passe
-        self.APIobject.run('Mot de Passe')
-        self.dictionnary=self.APIobject.get()
-        
 
-    def generateExchanges(self):
-      exchangesList=[]
-      for exchange, data in self.dictionnary.items():
-          exchange_id = data[0]
-          exchange_class = getattr(ccxt, exchange_id)
-          exec("exchangesList.append(exchange_class({
-    'apiKey': ,
-    'secret': 'YOUR_SECRET',
-    'timeout': 30000,
-    'enableRateLimit': True,
-})
-                                     
-                                     
-                                     
-                                     )")
-        exec(“self.exchangesList.append(%s = %d.%e(%f,%g,{'enableRateLimit': True,}))” %(data[0], 'ccxt', data[0], data[1], data[2]))
-      return exchangesList
+
+def convert(Amount: int, Token: str) -> int: #amount in BTC
+  priceInBTC=Amount*price
   
-    """
-    # from variable id
-exchange_id = 'binance'
-exchange_class = getattr(ccxt, exchange_id)
-exchange = exchange_class({
-    'apiKey': 'YOUR_API_KEY',
-    'secret': 'YOUR_SECRET',
-    'timeout': 30000,
-    'enableRateLimit': True,
-})
-    """
-    
-    
-    
-    
-    
-    
-    
-
-def balances(Exchanges_balances: list) -> int: #changer le nom de la variable, liste de dictionnaires avec les soldes de chaque compte en différentes crypto
+  https://stackoverflow.com/questions/9195455/how-to-document-a-method-with-parameters
+  
+  def balances(Exchanges_balances: list) -> int: #changer le nom de la variable, liste de dictionnaires avec les soldes de chaque compte en différentes crypto
     for balance in Exchanges_balances:
         for crypto in balance:
             TotalBTC=amount*priceInBTC
             TotalUSD=amount*priceInUSD
             TotalEUR=amount*priceInEUR
-    
-    
-
-
-def main():
-  knownExchanges=Exchanges()
-  knownExchanges.openExchanges()
-  for exchange in exchanges:
-    exchange.fetchBalance()
-    exchange.fetchMyTrades()
