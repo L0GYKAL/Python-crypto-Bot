@@ -1,6 +1,20 @@
 import APIkeys_fetching.py
 import ccxt
 
+
+""" l'interface graphique demande un MDP (AskPass(FirstTime))
+    déchiffrement du dictionnaire
+    stockage des info dans une pandas datastructure
+    création des objets exchanges avec ccxt
+    liste des exchanges -> pandas datastructure (dernière colonne)
+    
+    global MDP, exchangesList
+    """
+
+
+
+
+
 class Exchanges:
     def __init__(self):
         self.exchangesList=generateExchanges()
