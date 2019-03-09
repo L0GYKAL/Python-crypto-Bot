@@ -1,48 +1,33 @@
 import APIkeys_fetching.py
+import tutorial.py
+import FirstBoot.py
 import pandas as pd
 import ccxt
 
+
 def boot():
     global MDP, exchangesDict, exchangesDf
-    #MDP  =  lancer l'interface graphique, si c'est la première fois qu'il lance le programme -> MDP 
-    if firstTime== True:
+    # MDP  =  lancer l'interface graphique, si c'est la première fois qu'il lance le programme -> MDP
+    if firstTime == True:
         firstboot()
-    APIobject=APIKeys()
+    APIobject = APIKeys()
     APIobject.run(MDP)
-    exchangesDict=APIobject.get()
-    exchangesDf = pandas.DataFrame.from_dict(exchangesDict , orient = 'index', columns = ['Type','PublicKey', 'PrivateKey'])
+    exchangesDict = APIobject.get()
+    exchangesDf = pandas.DataFrame.from_dict(exchangesDict, orient='index', columns=[
+                                             'Type', 'PublicKey', 'PrivateKey'])
     openExchanges()
-    
 
-def first():
-    if Apikeys == json.dumps('{}'):
-        return True
-    else:
-        return False
-    
-def firstboot():
-    """Il faut que l'interface demande:
-        Un Username
-        Un MDP et une confirmation du MDP"""
-    while Pass1 != Pass2:
-      #l'interface dit 'passwords don't match'
-    global MDP
-    MDP=str(Pass1)
-    #Lancer la fonction tuto
-    Tuto()#affiche un tutoriel
-  
-    
-    
+
 def openExchanges():
     global exchangesDf
-    exchangeSerie = pd.Series(dtype = ccxt)
+    exchangeSerie = pd.Series(dtype=ccxt)
     for i in exchangesDf.index:
-        code =  'exchangeSerie.set_value(' +i + ',' + exchangesDf.index[i] + "ccxt." + exchangesDf.Type[i] + "({" + exchangesDf.PublicKey[i] + ',' + exchangesDf.PrivateKey[i] + '}))'
+        code = 'exchangeSerie.set_value(' + i + ',' + exchangesDf.index[i] + "ccxt." + exchangesDf.Type[i] + \
+            "({" + exchangesDf.PublicKey[i] + \
+            ',' + exchangesDf.PrivateKey[i] + '}))'
         exec(code)
     exchangesDf.append(exchangeSerie)
-    
-    
-    
-    
+
+
 if __name__ == '__main__':
     boot()
