@@ -4,6 +4,10 @@ import base64  # pip install base64
 import json
 import os
 
+#https://stackoverflow.com/questions/52116171/how-to-encrypt-and-decrypt-pandas-dataframe-with-decryption-key
+#https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html
+#(http://www.datasciencemadesimple.com/encode-decode-column-dataframe-python/)
+
 
 class APIkeys:
 
