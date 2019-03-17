@@ -1,18 +1,4 @@
-def convert(Amount: int, Token: str) -> int: #amount in BTC
-  priceInBTC=Amount*price
-  
-  https://stackoverflow.com/questions/9195455/how-to-document-a-method-with-parameters
-    
-    def balances(exchanges: Exchanges):
-    balances=[]
-    for exchange in exchanges.exchangesList:
-        balances.append(exchanges.exchangesList[i].fetchBalance())
-
-
-
-
-  
-  #THIS WORKS
+#THIS WORKS
 import ccxt
 import pandas as pd
 total = float()
