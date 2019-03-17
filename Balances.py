@@ -12,10 +12,43 @@ def convert(Amount: int, Token: str) -> int: #amount in BTC
 
 
   
-  def balances(Exchanges_balances: list) -> int: #changer le nom de la variable, liste de dictionnaires avec les soldes de chaque compte en différentes crypto
-    for balance in Exchanges_balances:
-        for crypto in balance:
-            TotalBTC=amount*priceInBTC
-            TotalUSD=amount*priceInUSD
-            TotalEUR=amount*priceInEUR
-
+  #THIS WORKS
+import ccxt
+import pandas as pd
+total = float()
+binance = ccxt.binance({
+   'id':
+   'Binance',
+   'apiKey':
+   '',
+   'secret':
+   ''
+})
+balances = binance.fetchBalance()
+# print(balances)
+balances = pd.DataFrame(data=balances['info']['balances'])
+# print(balances)
+for i in balances.index:
+   if balances.loc[i, 'asset'] == 'BTC':
+       balInBTC = float(balances.loc[i, 'free']) + float(
+           balances.loc[i, 'locked'])
+       print('You have ' + str(
+           float(balances.loc[i, 'free']) + float(balances.loc[i, 'locked'])
+       ) + ' ' + balances.loc[i, 'asset'] + ' It represents ' + str(balInBTC))
+       total += balInBTC
+   elif balances.loc[i, 'asset'] == 'VTHO':
+       pass
+   elif float(balances.loc[i, 'free']) + float(
+           balances.loc[i, 'locked']) != 0:
+try:
+       ticker = binance.fetchTicker(balances.loc[i, 'asset'] + '/BTC')
+except:
+     ticker['last']=0
+       balInBTC = ticker['last'] * (
+           float(balances.loc[i, 'free']) + float(balances.loc[i, 'locked']))
+       print('You have ' + str(
+           float(balances.loc[i, 'free']) + float(balances.loc[i, 'locked'])
+       ) + ' ' + balances.loc[i, 'asset'] + ' It represents ' + str(balInBTC))
+       total += balInBTC
+print('You have an aproximated amount of BTC: '+ total)
+#reste a vérifier si la paires existe dans le market  avec loadMarkets()
