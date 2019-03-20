@@ -37,4 +37,7 @@ except:
        ) + ' ' + balances.loc[i, 'asset'] + ' It represents ' + str(balInBTC))
        total += balInBTC
 print('You have an aproximated amount of BTC: '+ total)
-#reste a vérifier si la paires existe dans le market  avec loadMarkets()
+#reste a vérifier si la paires existe dans le market  avec fetchMarkets()
+"""
+   
+"""
