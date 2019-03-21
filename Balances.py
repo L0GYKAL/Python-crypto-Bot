@@ -1,6 +1,13 @@
 # THIS WORKS
 import ccxt
 import pandas as pd
+mport request
+
+
+def fetchAddress(symbol, address):  # hibrix api
+
+
+BalanceJson = request.get('').json()
 
 
 def fetchBalance(exchange):
@@ -30,10 +37,10 @@ def fetchBalance(exchange):
                     balInBTC = ticker['last'] * (
                         float(balances.loc[i, 'free']) + float(balances.loc[i, 'locked']))
         print('You have ' + str(
-            float(balances.loc[i, 'free']) +
-            float(balances.loc[i, 'locked'])
+            float(balances.loc[i, 'free'])
+            + float(balances.loc[i, 'locked'])
         ) + ' ' + balances.loc[i, 'asset'] + ' It represents ' + str(balInBTC))
         total += balInBTC
-    print('You have an approximate amount of' +
-          total + ' BTC in ' + exchange[1])
+    print('You have an approximate amount of'
+          + total + ' BTC in ' + exchange[1])
     # reste a vérifier si la paires existe dans le market  avec loadMarkets()
