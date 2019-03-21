@@ -5,9 +5,8 @@ mport request
 
 
 def fetchAddress(symbol, address):  # hibrix api
-
-
-BalanceJson = request.get('').json()
+    BalanceJson = request.get(
+        'https://api.hybrix.io/asset/' + symbol + '/balance/' + address).json()
 
 
 def fetchBalance(exchange):
