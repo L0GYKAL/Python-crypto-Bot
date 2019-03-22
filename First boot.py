@@ -1,13 +1,5 @@
 import tutorial.py
 
-
-def first():
-    if Apikeys == json.dumps('{}'):
-        return True
-    else:
-        return False
-
-
 def firstboot():
     """Il faut que l'interface demande:
         Un Username
@@ -18,5 +10,4 @@ def firstboot():
     MDP = str(Pass1)
     # Lancer la fonction tuto
     Tuto()  # affiche un tutoriel
-    else:
-        pass
+
