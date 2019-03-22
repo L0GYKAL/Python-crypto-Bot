@@ -1,12 +1,19 @@
 # THIS WORKS
 import ccxt
 import pandas as pd
-mport request
+import requests
 
 
-def fetchAddress(symbol, address):  # hibrix api
-    BalanceJson = request.get(
-        'https://api.hybrix.io/asset/' + symbol + '/balance/' + address).json()
+def fetchAddress(symbol, address): #voir quelle api j'utilise
+    """ Il faut faire une liste défilante avec les asset qui sont retournés par la request ci-dessus
+    """
+    balance = requests.get(
+        'https://chain.so/api/v2/get_address_balance/' + symbol + '/' + address).json()
+    if balance['status'] == 'success':
+        balance= balance['data']['confirmed_balance']
+        return balance
+    else:
+        print('There is a probleme')
 
 
 def fetchBalance(exchange):
@@ -43,3 +50,15 @@ def fetchBalance(exchange):
     print('You have an approximate amount of'
           + total + ' BTC in ' + exchange[1])
     # reste a vérifier si la paires existe dans le market  avec loadMarkets()
+    
+    
+def main():
+    balance = requests.get('https://api.hybrix.io/asset/btc/balance/32FCGFdRGeho2HBeWQPaAYawJfPqHHvsCJ').json()
+    print(balance['data'])
+    balance = requests.get('https://api.hybrix.io/proc/').json()  #//// https://chain.so/api/v2/get_address_balance/' + symbol + '/' + address
+    balance = requests.get('https://api.hybrix.io/proc/1553285213103127').json()
+    #fetchAddress('doge', 'DSFi6NPHgt3R8Jr2HJyrSq35QtuRsUEGxm') https://api.hybrix.io/proc/1553285213103127
+    print(balance)
+    
+if __name__ == '__main__':
+    main()
