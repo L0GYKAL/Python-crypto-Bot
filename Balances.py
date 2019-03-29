@@ -10,6 +10,15 @@ import ccxt
 import pandas as pd
 import requests
 
+def marketPercent(timeUnit: str): #timeUnit = 7d or 1h or 24h
+    info = requests.get('https://api.coinmarketcap.com/v1/ticker/').json()
+    totalpercent7D= float()
+    percent = 'percent_change_' + timeUnit
+    for i in info.len():
+        totalpercent7D += float(info[i][    percent = 'percent_change_' + timeUnit])
+    totalpercent7D = totalpercent7D / info.len()
+    print('In 7 days, top 100 cryptocurrencies performed '+ str(totalpercent7D) + '%!')
+
 
 def fetchAddress(symbol, address):  # fetchAddress('doge', 'DSFi6NPHgt3R8Jr2HJyrSq35QtuRsUEGxm')
     """ Il faut faire une liste défilante avec les asset qui sont retournés par la request ci-dessus
