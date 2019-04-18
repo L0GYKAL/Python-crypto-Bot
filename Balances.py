@@ -69,10 +69,11 @@ def fetchExchangeBalance(exchange):
                         if markets[ticker] != 0:
                             balInBTC=ticker['last'] * (
                                 float(balances.loc[i, 'free']) + float(balances.loc[i, 'locked']))
-            print('You have ' + str(
+           """ print('You have ' + str(
                 float(balances.loc[i, 'free'])
                 + float(balances.loc[i, 'locked'])
-            ) + ' ' + balances.loc[i, 'asset'] + ' It represents ' + str(balInBTC))
+            ) + ' ' + balances.loc[i, 'asset'] + ' It represents ' + str(balInBTC))"""
             total += balInBTC
-    print('You have an approximate amount of'
-          + total + ' BTC in ' + exchange[1])
+    """print('You have an approximate amount of'
+          + total + ' BTC in ' + exchange[1])"""
+    return total
