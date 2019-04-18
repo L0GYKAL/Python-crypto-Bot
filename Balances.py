@@ -33,9 +33,8 @@ def fetchAddress(symbol, address):  # fetchAddress('doge', 'DSFi6NPHgt3R8Jr2HJyr
         print('There is a probleme')
 
 
-def convertAdress(symbol: str, amount: float, conversion: str) -> float:
+def convertAdress(symbol: str, conversion: str) -> float:
     """symbol: BTC
-    amount:0.25968
     conversion: EUR"""
     request = requests.get('https://api.cryptonator.com/api/full/' + symbol + '-' + conversion)
     weightedPrice= request['ticker']['price']
