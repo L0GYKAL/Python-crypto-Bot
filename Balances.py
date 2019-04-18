@@ -9,6 +9,7 @@ Created on Thu Mar 28 18:47:56 2019
 import ccxt
 import pandas as pd
 import requests
+import datetime
 
 def marketPercent(timeUnit: str): #timeUnit = 7d or 1h or 24h
     info = requests.get('https://api.coinmarketcap.com/v1/ticker/').json()
