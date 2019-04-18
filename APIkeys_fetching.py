@@ -8,7 +8,7 @@ import os
 # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_string.html
 
 class APIkeys:
-    global exchangesDf, MDP
+    global exchangesDf, addressesDf, MDP
 
     def __init__(self):
         self.fileName = 'APIkeys.csv'
@@ -76,18 +76,20 @@ class APIkeys:
         for i in exchangesDf.index():
             if ((exchangesDf.loc[i, 'id'] == id) or (exchangesDf.loc[i, 'secret'] == secret and exchangesDf.loc[i, 'apiKey'] == apiKey and exchangesDf.loc[i, 'type'] == type)):
                 return True
+        return False
 # management des exchanges sauvegardés
 
     def add_APIkeys(self, id, type, apiKey, secret):
-        global MDP, exchangesDf
+        global exchangesDf
+
         """Permet de vérifier si l'exchange existe déjà ou pas
         et ajouter l'exchange au dictionnaire puis l'écrire dans le dictionnaire crypté"""
-
         if self.exchangeExist(id, type, apiKey, secret):
             print('This exchange already exist. Try to edit it')
         else:
-            exchangesDf[len(exchangesDf)] = [
+            data = [
                 id, type, apiKey, secret]
+            exchangesDf.append(data)
             self.write_APIkeys()
 
     def del_APIkeys(self, id):
