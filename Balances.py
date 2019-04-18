@@ -10,6 +10,7 @@ import ccxt
 import pandas as pd
 import requests
 import datetime
+import os
 
 def marketPercent(timeUnit: str): #timeUnit = 7d or 1h or 24h
     info = requests.get('https://api.coinmarketcap.com/v1/ticker/').json()
@@ -77,3 +78,5 @@ def fetchExchangeBalance(exchange):
     """print('You have an approximate amount of'
           + total + ' BTC in ' + exchange[1])"""
     return total
+
+
