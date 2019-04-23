@@ -2,3 +2,8 @@ wheel
 ccxt
 requests
 pycrypto
+pandas
+hashlib
+base64
+socket
+plotly
