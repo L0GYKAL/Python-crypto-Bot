@@ -8,7 +8,7 @@ def chart(exchange: ccxt, ticker: str, time):  # time: '1m','1d'
     df[0] = pd.to_datetime(df[0], unit='ms')
     layout = {'title': ticker,
               'yaxis': {'title': 'Price'}}
-    trace = go.Ohlc(
+    trace = go.Candlestick(
         x=df[0],
         open=df[1],
         high=df[2],
