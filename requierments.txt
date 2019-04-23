@@ -1,0 +1,4 @@
+wheel
+ccxt
+requests
+pycrypto
