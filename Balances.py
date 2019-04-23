@@ -12,14 +12,17 @@ import requests
 import datetime
 import os
 
-def marketPercent(timeUnit: str): #timeUnit = 7d or 1h or 24h
+balanceHistory = pd.Dataframe()
+
+def marketPercent(timeUnit: str): #timeUnit = 7d or 1h or 24h #rend le pourcentage de différence de prix pour les 100 premières crypto
     info = requests.get('https://api.coinmarketcap.com/v1/ticker/').json()
-    totalpercent7D= float()
+    totalpercent7D = float()
     percent = 'percent_change_' + timeUnit
     for i in info.len():
-        totalpercent7D += float(info[i][    percent = 'percent_change_' + timeUnit])
-    totalpercent7D = totalpercent7D / info.len()
-    print('In 7 days, top 100 cryptocurrencies performed '+ str(totalpercent7D) + '%!')
+        totalpercent += float(info[i][    percent = 'percent_change_' + timeUnit])
+    totalpercent = totalpercent / info.len()
+    #print('In 7 days, top 100 cryptocurrencies performed '+ str(totalpercent7D) + '%!')
+    return totalpercent
 
 
 def fetchAddress(symbol, address):  # fetchAddress('doge', 'DSFi6NPHgt3R8Jr2HJyrSq35QtuRsUEGxm')
@@ -79,4 +82,47 @@ def fetchExchangeBalance(exchange):
           + total + ' BTC in ' + exchange[1])"""
     return total
 
+def compileBalances():
+    #
+    for address in adresses:
+        try:
+            totalBTC += float(fetchAddress(symbol, address)) * \
+                float(convertAdress(symbol, 'BTC'))
+        except:
+            pass
+    for exchange in exchanges:
+        try:
+            totalBTC += float(fetchExchangeBalance(exchange))
+        except:
+            pass
+    return totalBTC
 
+
+def saveBalance(totalBTC):
+    row = [datetime.today(), totalBTC]
+    if os.path.isfile('balanceHistory.csv'):
+        with open('balanceHistory.csv', 'r') as f:
+            balanceHistory = pd.read_csv(f)
+        if balanceHistory.at[0, -1] != datetime.today():
+            balanceHistory.append(row)
+            balanceHistory.to_csv('balanceHistory.csv')
+        else:
+            pass
+    else:
+        f = open('balanceHistory.csv', 'a')
+        f.close()
+        balanceHistory = pd.DataFrame(columns=['date', 'BalanceInBTC'])
+        balanceHistory.append(row)
+        balanceHistory.to_csv('balanceHistory.csv')
+
+
+def readBalances():
+    if os.path.isfile('balanceHistory.csv'):
+        with open('balanceHistory.csv', 'r') as f:
+            balanceHistory = pd.read_csv(f)
+        return balanceHistory
+    else:
+        f = open('balanceHistory.csv', 'a')
+        f.close()
+        balanceHistory = pd.DataFrame(columns=['date', 'BalanceInBTC'])
+        balanceHistory.to_csv('balanceHistory.csv')
