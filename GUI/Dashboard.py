@@ -1,9 +1,11 @@
+import image
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Tutorial import Ui_Dialogue
 from account import Ui_Account
 from news import Ui_News
 from alerts import Ui_Alerts
 from watchlist import Ui_Watchlist
+
 
 class Ui_Dialog(object):
 
@@ -12,7 +14,6 @@ class Ui_Dialog(object):
         self.ui = Ui_Watchlist()
         self.ui.setupUi(self.window)
         self.window.show()
-        
 
     def openAlerts(self):
         self.window = QtWidgets.QMainWindow()
@@ -37,7 +38,7 @@ class Ui_Dialog(object):
         self.ui = Ui_Dialogue()
         self.ui.setupUi(self.window)
         self.window.show()
-        
+
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(703, 395)
@@ -47,25 +48,25 @@ class Ui_Dialog(object):
         self.pushButton.setObjectName("pushButton")
 
         self.pushButton.clicked.connect(self.openAccount)
-        
+
         self.pushButton_2 = QtWidgets.QPushButton(Dialog)
         self.pushButton_2.setGeometry(QtCore.QRect(60, 130, 75, 23))
         self.pushButton_2.setObjectName("pushButton_2")
 
         self.pushButton_2.clicked.connect(self.openWatchlist)
-        
+
         self.pushButton_3 = QtWidgets.QPushButton(Dialog)
         self.pushButton_3.setGeometry(QtCore.QRect(60, 180, 75, 23))
         self.pushButton_3.setObjectName("pushButton_3")
 
         self.pushButton_3.clicked.connect(self.openNews)
-        
+
         self.pushButton_4 = QtWidgets.QPushButton(Dialog)
         self.pushButton_4.setGeometry(QtCore.QRect(60, 230, 75, 23))
         self.pushButton_4.setObjectName("pushButton_4")
 
         self.pushButton_4.clicked.connect(self.openAlerts)
-        
+
         self.pushButton_5 = QtWidgets.QPushButton(Dialog)
         self.pushButton_5.setGeometry(QtCore.QRect(60, 370, 75, 23))
         self.pushButton_5.setObjectName("pushButton_5")
@@ -88,8 +89,6 @@ class Ui_Dialog(object):
         self.pushButton_5.setText(_translate("Dialog", "Settings"))
         self.pushButton_6.setText(_translate("Dialog", "How to use SIR ?"))
 
-import image
-
 
 if __name__ == "__main__":
     import sys
@@ -99,4 +98,3 @@ if __name__ == "__main__":
     ui.setupUi(Dialog)
     Dialog.show()
     sys.exit(app.exec_())
-

@@ -14,14 +14,16 @@ import os
 
 balanceHistory = pd.Dataframe()
 
-def marketPercent(timeUnit: str): #timeUnit = 7d or 1h or 24h #rend le pourcentage de différence de prix pour les 100 premières crypto
+
+# timeUnit = 7d or 1h or 24h #rend le pourcentage de différence de prix pour les 100 premières crypto
+def marketPercent(timeUnit: str):
     info = requests.get('https://api.coinmarketcap.com/v1/ticker/').json()
     totalpercent7D = float()
     percent = 'percent_change_' + timeUnit
     for i in info.len():
-        totalpercent += float(info[i][    percent = 'percent_change_' + timeUnit])
+        totalpercent += float(info[i][percent='percent_change_' + timeUnit])
     totalpercent = totalpercent / info.len()
-    #print('In 7 days, top 100 cryptocurrencies performed '+ str(totalpercent7D) + '%!')
+    # print('In 7 days, top 100 cryptocurrencies performed '+ str(totalpercent7D) + '%!')
     return totalpercent
 
 
@@ -41,13 +43,14 @@ def fetchAddress(symbol, address):  # fetchAddress('doge', 'DSFi6NPHgt3R8Jr2HJyr
 def convertAdress(symbol: str, conversion: str) -> float:
     """symbol: BTC
     conversion: EUR"""
-    request = requests.get('https://api.cryptonator.com/api/full/' + symbol + '-' + conversion)
-    weightedPrice= request['ticker']['price']
+    request = requests.get(
+        'https://api.cryptonator.com/api/full/' + symbol + '-' + conversion)
+    weightedPrice = request['ticker']['price']
     return weightedPrice
 
 
 def fetchExchangeBalance(exchange):
-    total=float()
+    total = float()
 # exchange[0]=ccxtObject and exchange[1]=name
     """binance = ccxt.binance({
         'id':
@@ -57,21 +60,21 @@ def fetchExchangeBalance(exchange):
         'secret':
         'yISA8ODctEZY4ncjpHIxAKar638Xe9hvjmldi7TRKxQ9L1Zcb3MvSuJMDpeIG8rs'
     })"""
-    balances=exchange[0].fetchBalance()
+    balances = exchange[0].fetchBalance()
     # print(balances)
-    balances=pd.DataFrame(data=balances['info']['balances'])
+    balances = pd.DataFrame(data=balances['info']['balances'])
     markets = exchange[0].loadMarkets()
     for i in balances.index:
-        ticker=balances.loc[i, 'asset'] + '/BTC'
+        ticker = balances.loc[i, 'asset'] + '/BTC'
             if exchange[0].markets[ticker]:
                 if float(balances.loc[i, 'free']) + float(
                         balances.loc[i, 'locked']) != 0:
                     if balances.loc[i, 'asset'] == 'BTC':
-                        balInBTC=float(balances.loc[i, 'free']) + float(
+                        balInBTC = float(balances.loc[i, 'free']) + float(
                             balances.loc[i, 'locked'])
                     else:
                         if markets[ticker] != 0:
-                            balInBTC=ticker['last'] * (
+                            balInBTC = ticker['last'] * (
                                 float(balances.loc[i, 'free']) + float(balances.loc[i, 'locked']))
            """ print('You have ' + str(
                 float(balances.loc[i, 'free'])
@@ -126,8 +129,8 @@ def readBalances():
         f.close()
         balanceHistory = pd.DataFrame(columns=['date', 'BalanceInBTC'])
         balanceHistory.to_csv('balanceHistory.csv')
-        
- 
+
+
 class addresses:
     def addressExist(id, address, symbol):
         global addressesDf

@@ -7,3 +7,4 @@ hashlib
 base64
 socket
 plotly
+pyqt5

@@ -8,18 +8,21 @@ import sys
 
 def boot():
     global MDP, exchangesDf
-    
-    APIobject = APIKeys()
-    if APIobject.firstTime() == True:#c'est la première fois que ça a été lancé
-        register_user()# MDP  =  lancer l'interface graphique, si c'est la première fois qu'il lance le programme -> MDP
-        APIobject.run(MDP)
-    else:
-        login()
-        while not pass(MDP):
-            login()
-        APIobject.run(MDP)
-    #openExchanges()
 
+    if is_connected():
+      APIobject = APIKeys()
+       if APIobject.firstTime() == True:  # c'est la première fois que ça a été lancé
+            register_user()  # MDP  =  lancer l'interface graphique, si c'est la première fois qu'il lance le programme -> MDP
+            APIobject.run(MDP)
+        else:
+            login()
+            while not pass(MDP):
+                login()
+            APIobject.run(MDP)
+        # openExchanges()
+    else:
+        print('No internet!')
+        sys.exit()
 
 def openExchanges():
     global exchangesDf
