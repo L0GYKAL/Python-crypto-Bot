@@ -15,6 +15,8 @@ def boot():
         APIobject.run(MDP)
     else:
         login()
+        while not pass(MDP):
+            login()
         APIobject.run(MDP)
     #openExchanges()
 
