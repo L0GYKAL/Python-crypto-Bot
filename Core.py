@@ -1,22 +1,22 @@
 import APIkeys_fetching.py
 import tutorial.py
-import FirstBoot.py
+import GUI\\LoginRegistration.py
 import pandas as pd
 import ccxt
 import sys
 
 
 def boot():
-    global MDP, exchangesDict, exchangesDf
-    # MDP  =  lancer l'interface graphique, si c'est la première fois qu'il lance le programme -> MDP
+    global MDP, exchangesDf
+    
     APIobject = APIKeys()
-    if APIobject.firstTime() == True:
-        firstboot()
-    else:
+    if APIobject.firstTime() == True:#c'est la première fois que ça a été lancé
+        register_user()# MDP  =  lancer l'interface graphique, si c'est la première fois qu'il lance le programme -> MDP
         APIobject.run(MDP)
-    exchangesDict = APIobject.get()
-    exchangesDf = pandas.DataFrame( columns=['id','type', 'apiKey', 'secret'])
-    openExchanges()
+    else:
+        login()
+        APIobject.run(MDP)
+    #openExchanges()
 
 
 def openExchanges():
