@@ -1,6 +1,6 @@
 import APIkeys_fetching.py
 import tutorial.py
-import GUI\\LoginRegistration.py
+import GUI.LoginRegistration.py
 import pandas as pd
 import ccxt
 import sys
