@@ -8,3 +8,4 @@ base64
 socket
 plotly
 pyqt5
+beautifulsoup
