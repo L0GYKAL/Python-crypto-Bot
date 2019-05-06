@@ -68,7 +68,7 @@ class APIkeys:
         else:
             return True
 
-    def pass(MDP) -> bool:
+    def password(self,MDP) -> bool:
         with open(self.fileName, 'r') as f:
             cryptDf = pd.read_csv(f)
             if hashlib.sha224(MDP).hexdigest() == cryptDf.loc[0, 'checksum']:
