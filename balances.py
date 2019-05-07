@@ -45,13 +45,11 @@ def fetchAddress(symbol, address):  # fetchAddress('btc', '385cR5DM96n1HvBDMzLHP
         print('There is a probleme')
 
 
-def convertAdress(symbol: str, conversion: str) -> float:
-    """symbol: BTC
-    conversion: EUR"""
+def getPrice(symbol: str, conversion: str) -> float:# symbol: 'BTC', conversion: 'EUR'
     request = requests.get(
-        'https://api.cryptonator.com/api/full/' + symbol + '-' + conversion)
+        'https://api.cryptonator.com/api/full/' + symbol + '-' + conversion).json()
     weightedPrice = request['ticker']['price']
-    return weightedPrice
+    return float(weightedPrice)
 
 
 def fetchExchangeBalance(exchange):
@@ -95,7 +93,7 @@ def compileBalances():
     for address in adresses:
         try:
             totalBTC += float(fetchAddress(symbol, address)) * \
-                float(convertAdress(symbol, 'BTC'))
+                float(getPrice(symbol, 'BTC'))
         except:
             pass
     for exchange in exchanges:
