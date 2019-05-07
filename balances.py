@@ -22,11 +22,11 @@ def getAllSymbols():#tous les symboles de d'adresse de cryptomonnaies supportés
 # timeUnit = 7d or 1h or 24h #rend le pourcentage de différence de prix pour les 100 premières crypto
 def marketPercent(timeUnit: str):
     info = requests.get('https://api.coinmarketcap.com/v1/ticker/').json()
-    totalpercent7D = float()
+    totalpercent = float()
     percent = 'percent_change_' + timeUnit
-    for i in info.len():
-        totalpercent += float(info[i][percent='percent_change_' + timeUnit])
-    totalpercent = totalpercent / info.len()
+    for i in info:
+        totalpercent += float(i[percent])
+    totalpercent = totalpercent / len(info)
     # print('In 7 days, top 100 cryptocurrencies performed '+ str(totalpercent7D) + '%!')
     return totalpercent
 
