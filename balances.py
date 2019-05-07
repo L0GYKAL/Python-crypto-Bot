@@ -31,13 +31,15 @@ def marketPercent(timeUnit: str):
     return totalpercent
 
 
-def fetchAddress(symbol, address):  # fetchAddress('doge', 'DSFi6NPHgt3R8Jr2HJyrSq35QtuRsUEGxm')
+def fetchAddress(symbol, address):  # fetchAddress('btc', '385cR5DM96n1HvBDMzLHPYcw89fZAXULJP')
     """le symbol est à choisir parmis ceux de la liste retournés par getAllSymbols()"""
     request = requests.get(
-        'https://api.hybrix.io/asset/' + symbol + '/balance/' + address).json()
+        'https://api.hybrix.io/asset/' + symbol + '/balance/' + address).json()#demande le montant de crypto sur cette adresse
     if request['error'] == 0:
         balance = requests.get(
-            'https://api.hybrix.io/proc/' + str(request['data'])).json()
+            'https://api.hybrix.io/proc/' + str(request['data'])).json()#api en deux étapes: deuxième montant
+        if balance['data']==None:
+            balance['data'] = 0
         return balance['data']
     else:
         print('There is a probleme')
