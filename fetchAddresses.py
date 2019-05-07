@@ -2,6 +2,8 @@
 
 
 class addresses:
+    def __init__(self):
+        addressesDf = pd.DataFrame()
     def addressExist(id, address, symbol):
         global addressesDf
         for i in addressesDf.index():
