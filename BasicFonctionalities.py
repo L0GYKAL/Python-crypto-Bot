@@ -29,9 +29,6 @@ def tickerFinder(symbol: str):
         markets[exchange] = tickers
     return markets
 
-def getAllSymbols():
-    symbolsList = requests.get('https://api.hybrix.io/asset/').json()['data']
-    return symbolsList
 
 if __name__ == '__main__':
     if is_connected():
