@@ -1,4 +1,5 @@
 import socket
+import requests
 
 
 def is_connected():  # retrun True if connected, False else
@@ -27,6 +28,10 @@ def tickerFinder(symbol: str):
                 tickers.append(str(ticker))
         markets[exchange] = tickers
     return markets
+
+def getAllSymbols():
+    symbolsList = requests.get('https://api.hybrix.io/asset/').json()['data']
+    return symbolsList
 
 if __name__ == '__main__':
     if is_connected():
