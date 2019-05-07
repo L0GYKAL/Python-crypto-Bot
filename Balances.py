@@ -32,8 +32,7 @@ def marketPercent(timeUnit: str):
 
 
 def fetchAddress(symbol, address):  # fetchAddress('doge', 'DSFi6NPHgt3R8Jr2HJyrSq35QtuRsUEGxm')
-    """ Il faut faire une liste défilante avec les asset qui sont retournés par la request ci-dessus
-    symbolList = requests.get('https://api.hybrix.io/asset/').json()"""
+    """le symbol est à choisir parmis ceux de la liste retournés par getAllSymbols()"""
     request = requests.get(
         'https://api.hybrix.io/asset/' + symbol + '/balance/' + address).json()
     if request['error'] == 0:
