@@ -15,6 +15,10 @@ import os
 balanceHistory = pd.Dataframe()
 
 
+def getAllSymbols():#tous les symboles de d'adresse de cryptomonnaies supportés par l'API hybrix
+    symbolsList = requests.get('https://api.hybrix.io/asset/').json()['data']
+    return symbolsList
+
 # timeUnit = 7d or 1h or 24h #rend le pourcentage de différence de prix pour les 100 premières crypto
 def marketPercent(timeUnit: str):
     info = requests.get('https://api.coinmarketcap.com/v1/ticker/').json()
