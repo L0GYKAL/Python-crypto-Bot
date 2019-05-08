@@ -10,19 +10,6 @@ def getAllSymbols():  # tous les symboles de d'adresse de cryptomonnaies support
     symbolsList = requests.get('https://api.hybrix.io/asset/').json()['data']
     return symbolsList
 
-# timeUnit = 7d or 1h or 24h #rend le pourcentage de différence de prix pour les 100 premières crypto
-
-
-def marketPercent(timeUnit: str):
-    info = requests.get('https://api.coinmarketcap.com/v1/ticker/').json()
-    totalpercent = float()
-    percent = 'percent_change_' + timeUnit
-    for i in info:
-        totalpercent += float(i[percent])
-    totalpercent = totalpercent / len(info)
-    # print('In 7 days, top 100 cryptocurrencies performed '+ str(totalpercent7D) + '%!')
-    return totalpercent
-
 
 def fetchAddress(symbol, address):  # fetchAddress('btc', '385cR5DM96n1HvBDMzLHPYcw89fZAXULJP')
     """le symbol est à choisir parmis ceux de la liste retournés par getAllSymbols()"""
