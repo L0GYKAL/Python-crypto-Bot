@@ -1,5 +1,7 @@
+import ccxt
+
 #Ordres ouverts
-def openOrders()
+def openOrders(exchange: ccxt):
   if exchange.has[‘fetchOrders’]:
     openOders = exchange.fetchOrders()
     return openOders
@@ -30,3 +32,18 @@ if exchange.has['fetchOrders']:
             all_orders += orders
         else:
             break"""
+
+#créer un ordre
+"""
+symbol = 'ETH/BTC'
+type = 'limit'  # or 'market', other types aren't unified yet
+side = 'sell'
+amount = 123.45  # your amount
+price = 54.321  # your price
+# overrides
+params = {
+    'stopPrice': 123.45,  # your stop price
+    'type': 'stopLimit',
+}
+order = exchange.create_order(symbol, type, side, amount, price, params)
+"""
