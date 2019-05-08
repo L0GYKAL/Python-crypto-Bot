@@ -2,18 +2,22 @@ import ccxt
 
 #Ordres ouverts
 def openOrders(exchange: ccxt):
-  if exchange.has[‘fetchOrders’]:
-    openOders = exchange.fetchOrders()
-    return openOders
-  
-Cancel order:
-def cancelOrder(exchenge: ccxt, id: str, symbol: str):
+    if exchange.has['fetchOpenOrders']:
+        exchange.options["warnOnFetchOpenOrdersWithoutSymbol"] = False
+        openOders = []
+        orders = exchange.fetchOpenOrders()
+        for openOrder in orders:
+            openOders.append([openOrder['id'], openOrder['symbol'], openOrder['side'], openOrder['price'], openOrder['amount']])
+        return openOders#liste de liste [id, symbol, SELL/BUY, price, amount]
+
+#Cancel order:
+def cancelOrder(exchange: ccxt, orderId, symbol: str): #ex: cancelOrder(binance, 11480381, 'MFT/BTC')
   try:
-    exchange.cancelOrder(id, symbol, params)
-    retrun str('Order canceled')
-  except e: #if there is an error
-    retrun e
-  #(ex: exchange.cancelOrder(‘123456789’) = exchange.cancelOrder(order id))
+    exchange.cancelOrder(orderId, symbol)
+    return str('Order canceled')
+  except: #if there is an error
+    print('error')
+  #(ex: cancelOrder(binance, 11480381, 'MFT/BTC'))
   
 
 #Trades terminés
