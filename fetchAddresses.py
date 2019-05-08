@@ -17,7 +17,7 @@ class addresses:
         self.addressesInfo.append([id, address, symbol])
         self.addressesInfo.to_csv('addresseInfo.csv')
         
-   class balanceHistory():
+class balanceHistory():
     def __init__(self):
         self.balanceHistory = pd.DataFrame(columns=['id', 'address', 'symbol'])
         if os.path.isfile('balanceHistory.csv'):
