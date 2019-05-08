@@ -9,3 +9,4 @@ socket
 plotly
 pyqt5
 beautifulsoup
+python-dateutil
