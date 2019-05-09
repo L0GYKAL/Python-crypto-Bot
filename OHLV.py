@@ -19,7 +19,7 @@ def chart(exchange: ccxt, ticker: str, time):  # time: '1m','1d'
         close=df[4])
     data = [trace]
     fig = dict(data=data, layout=layout)
-    filename = str(ticker).replace('/', ' ') + '.html'
+    filename = 'plotlyGraph.html'
     plot = py.plot(fig, filename=filename, auto_open=False)
     return plot
 
