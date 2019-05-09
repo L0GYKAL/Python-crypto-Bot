@@ -20,7 +20,7 @@ def chart(exchange: ccxt, ticker: str, time):  # time: '1m','1d'
         close=df[4])
     data = [trace]
     fig = dict(data=data, layout=layout)
-    filename = 'plotlyGraph.html'
+    filename = 'GUI\\plotlyGraph.html'
     plot = py.plot(fig, filename=filename, auto_open=False)
     return plot
 
@@ -31,7 +31,7 @@ def BTC_liveGraph(QWebEngineView):
     bitmex = ccxt.bitmex({'enableRateLimit': True})
     layout = {'title': 'BTC live price',
               'yaxis': {'title': 'Price in USD'}}
-    filename = 'BTC_liveGraph.html'
+    filename = 'GUI\\BTC_liveGraph.html'
     # récupération des premières info
     ticker = bitmex.fetchTicker('BTC/USD')
     datetime = parse(ticker['datetime']).time()
