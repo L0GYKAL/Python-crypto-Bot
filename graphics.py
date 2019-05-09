@@ -48,6 +48,22 @@ def BTC_liveGraph():
         data = [trace]
         fig = dict(data=data, layout=layout)
         plot_url = py.plot(fig, filename=filename, auto_open=False)
+        
+def plotsentimentAnalysis(data: list):#return a url to a graph
+    negativScore = float()
+    positivScore = float()
+    neutralScore = float()
+    for score in data:
+        positivScore += score['pos']
+        negativScore += score['neg']
+        neutralScore += score['neu']
+        
+    trace = {
+        "labels": ["Positive", "Negative", "Neutral"],
+        "type": "pie",
+        "values": [positivScore, negativScore, neutralScore]
+    }
+    py.iplot([trace], filename='sentimentAnalysis_Pie.html')     
 
 
 if __name__ == '__main__':
