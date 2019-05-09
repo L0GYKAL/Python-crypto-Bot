@@ -3,9 +3,6 @@ import pandas as pd
 import requests
 
 
-balanceHistory = pd.Dataframe()
-
-
 def getAllSymbols():  # tous les symboles de d'adresse de cryptomonnaies supportés par l'API hybrix
     symbolsList = requests.get('https://api.hybrix.io/asset/').json()['data']
     return symbolsList
