@@ -4,6 +4,7 @@ import pandas as pd
 import ccxt
 import plotly.graph_objs as go
 import plotly.offline as py
+import pyqt5
 
 
 def chart(exchange: ccxt, ticker: str, time):  # time: '1m','1d'
@@ -24,7 +25,7 @@ def chart(exchange: ccxt, ticker: str, time):  # time: '1m','1d'
     return plot
 
 
-def BTC_liveGraph():
+def BTC_liveGraph(QWebEngineView):
     global plot_url  # pour afficher le graph, il faut utiliser cette URL
     # déclaration des constantes
     bitmex = ccxt.bitmex({'enableRateLimit': True})
@@ -48,6 +49,7 @@ def BTC_liveGraph():
         data = [trace]
         fig = dict(data=data, layout=layout)
         plot_url = py.plot(fig, filename=filename, auto_open=False)
+        QWebEngineView.reload()
         
 def plotsentimentAnalysis(data: list):#return a url to a graph
     negativScore = float()
