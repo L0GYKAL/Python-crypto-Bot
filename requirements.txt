@@ -10,3 +10,5 @@ plotly
 pyqt5
 beautifulsoup
 python-dateutil
+tweepy
+vaderSentiment
