@@ -1,6 +1,12 @@
 import requests
 import ccxt
 
+def getAllCurrencies():#return all symbols of the most known cryptocurrencies
+    response = requests.get(url = 'https://api.coinmarketcap.com/v1/ticker/').json()
+    currencies = []
+    for currency in response:
+        currencies.append(currency['symbol'])
+    return currencies
 
 def is_connected():  # retrun True if connected, False else
     url = 'http://www.google.com/'
