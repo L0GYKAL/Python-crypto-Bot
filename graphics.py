@@ -4,7 +4,7 @@ import pandas as pd
 import ccxt
 import plotly.graph_objs as go
 import plotly.offline as py
-import pyqt5
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 def chart(exchange: ccxt, ticker: str, time):  # time: '1m','1d'
