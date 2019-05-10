@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import os
 
 class Ui_Responsemessage(object):
     def setupUi(self, Responsemessage):
@@ -43,9 +44,8 @@ class Ui_Responsemessage(object):
         _translate = QtCore.QCoreApplication.translate
         Responsemessage.setWindowTitle(_translate("Responsemessage", "Response message"))
         self.message.setText(_translate("Responsemessage", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; color:#ff0000;\">Congratulation!</span></p><p align=\"center\"><span style=\" font-size:16pt; color:#ff0000;\">Your action was effected</span></p></body></html>"))
-        self.image.setText(_translate("Responsemessage", "<html><head/><body><p><img src=\":/Images/validation.png\" width=50 height=50  /></p></body></html>"))
-
-import validation_rc
+        mypath = os.path.dirname(__file__)
+        self.image.setText(_translate("Responsemessage", "<html><head/><body><p><img src=\"" + mypath + "/images/validation.png\" width=\"50\" height=\"50\"/></p></body></html>"))
 
 if __name__ == "__main__":
     import sys
