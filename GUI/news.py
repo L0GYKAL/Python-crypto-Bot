@@ -7,9 +7,6 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-#pour accéder au dossier parent
-import sys
-sys.path.append("..") # Adds higher directory to python modules path.
 from newsAPI import getNews
 
 class Ui_Dialog(object):
