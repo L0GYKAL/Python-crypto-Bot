@@ -10,6 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 sys.path.append("..") # Adds higher directory to python modules path.
 import APIkeys_fetching, fetchAddresses
+from BasicFonctionalities import getAllCurrencies
 
 class Ui_Account(object):
     def setupUi(self, Account):
@@ -72,7 +73,7 @@ class Ui_Account(object):
         self.modifierButton.setGeometry(QtCore.QRect(110, 230, 75, 23))
         self.modifierButton.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.modifierButton.setObjectName("modifierButton")
-        self.modifierButton.clicked.connect(
+        self.modifierButton.clicked.connect(self.addAnExchange)
         self.Exchangeliste = QtWidgets.QComboBox(self.groupBox_3)
         self.Exchangeliste.setGeometry(QtCore.QRect(30, 40, 131, 31))
         self.Exchangeliste.setStyleSheet("background-color: rgb(255, 255, 255);")
@@ -92,7 +93,10 @@ class Ui_Account(object):
         self.comboBox_2.setGeometry(QtCore.QRect(30, 40, 131, 31))
         self.comboBox_2.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.comboBox_2.setObjectName("comboBox_2")
-        self.comboBox_2.addItem("")
+        symbols = getAllCurrencies()
+        for symbol in symbols:
+            self.comboBox_2.addItem(symbol)
+        self.comboBox_2.currentIndex(0)
         self.addressline = QtWidgets.QLineEdit(self.groupBox_4)
         self.addressline.setGeometry(QtCore.QRect(30, 110, 113, 20))
         self.addressline.setStyleSheet("background-color: rgb(255, 255, 255);")
@@ -101,7 +105,7 @@ class Ui_Account(object):
         self.addAddressepush.setGeometry(QtCore.QRect(70, 190, 75, 23))
         self.addAddressepush.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.addAddressepush.setObjectName("addAddressepush")
-        self.addAddressepush.clicked.connect(
+        self.addAddressepush.clicked.connect(self.addAnAddresse)
 
         self.retranslateUi(Account)
         QtCore.QMetaObject.connectSlotsByName(Account)
@@ -113,6 +117,13 @@ class Ui_Account(object):
         apikey = self.apikeyline.text()
         secret = self.secretLine.text()
         api.APIkeys_fetching.editKeys(exchange, Id, apikey, secret)
+        
+    def addAnAddresse(self):
+        addresses = fetchAddresses.addresses()
+        addresse = self.addressline.text()
+        symbol = self.comboBox_2.currentText()
+        addresses.add(addresse, symbol)
+        
 
     def retranslateUi(self, Account):
         _translate = QtCore.QCoreApplication.translate
