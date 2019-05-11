@@ -1,46 +1,66 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'F:\BTC_LiveGraph.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
-from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 import sys
-sys.path.append("..") # Adds higher directory to python modules path.
-import graphics 
+from PyQt5.Qt import QApplication, QMainWindow
+from PyQt5.QtCore import QThread, QRect, QUrl, QCoreApplication, QMetaObject, QTimer
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+
+
+class updator(QtCore.QThread):
+    def __init__(self, window):
+        QtCore.QThread.__init__(self)
+
+
+
+    def run(self):
+        while True:
+            self.sleep(2000 * 2 / 1000)
+            self.window.htmlreader_BTCLiveGraph.reload()
+
 
 class Ui_BTC_LiveGraph(object):
-    def setupUi(self, BTC_LiveGraph):
-        BTC_LiveGraph.setObjectName("BTC_LiveGraph")
-        BTC_LiveGraph.resize(1650, 900)
-        BTC_LiveGraph.setAccessibleDescription("")
-        self.htmlreader_BTCLiveGraph = QtWebEngineWidgets.QWebEngineView(BTC_LiveGraph)
-        self.htmlreader_BTCLiveGraph.setGeometry(QtCore.QRect(10, 10, 1771, 981))
+    def setupUi(self, widget):
+        self.mypath = os.path.dirname(__file__)
+        widget.setObjectName("BTC_LiveGraph")
+        widget.resize(1600, 900)
+        widget.setAccessibleDescription("")
+        self.htmlreader_BTCLiveGraph = QWebEngineView(widget)
+        self.htmlreader_BTCLiveGraph.setGeometry(QRect(10, 10, 1500, 800))
         self.htmlreader_BTCLiveGraph.setAccessibleDescription("")
-        #récupération du chemin absolu du fichier
-        mypath = os.path.dirname(__file__)
-        self.htmlreader_BTCLiveGraph.setUrl(QtCore.QUrl(str("file:///"+ mypath + "/BTC_liveGraph.html")))
         self.htmlreader_BTCLiveGraph.setObjectName("htmlreader_BTCLiveGraph")
 
-        self.retranslateUi(BTC_LiveGraph)
-        QtCore.QMetaObject.connectSlotsByName(BTC_LiveGraph)
+        self.retranslateUi(widget)
+        QMetaObject.connectSlotsByName(widget)
 
-    def retranslateUi(self, BTC_LiveGraph):
-        _translate = QtCore.QCoreApplication.translate
-        BTC_LiveGraph.setWindowTitle(_translate("BTC_LiveGraph", "BTC Live Graph"))
-        graphics.BTC_liveGraph(self.htmlreader_BTCLiveGraph)
+    def retranslateUi(self, widget):
+        _translate = QCoreApplication.translate
+        widget.setWindowTitle(_translate("BTC_LiveGraph", "BTC Live Graph"))
 
+
+class MainWindow(Ui_BTC_LiveGraph, QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setupUi(self)
+
+        # You can do this here, just keep the Ui class for UI stuff
+        self.mypath = os.path.dirname(__file__)
+        self.htmlreader_BTCLiveGraph.setUrl(QUrl(self.mypath + 'BTC_liveGraph.html'))
+
+        self._updator = QTimer(self)
+        self._updator.setSingleShot(False)
+        self._updator.timeout.connect(self.reload)
+        # Reload every 4 seconds
+        self._updator.start(4000)
+
+    def reload(self):
+        self.htmlreader_BTCLiveGraph.reload()
 
 
 if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    BTC_LiveGraph = QtWidgets.QDialog()
-    ui = Ui_BTC_LiveGraph()
-    ui.setupUi(BTC_LiveGraph)
-    BTC_LiveGraph.show()
-    sys.exit(app.exec_())
+    app = QApplication(sys.argv)
 
+    BTC_LiveGraph = MainWindow()
+    BTC_LiveGraph.show()
+
+    sys.exit(app.exec_())
