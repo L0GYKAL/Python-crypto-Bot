@@ -9,9 +9,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 import sys
-from .GUI import Graphs
-#import Buysell
-sys.path.append("..")  # Adds higher directory to python modules path.
+import Graphs
 from BasicFonctionalities import tickerFinder, marketPercent
 from graphics import chart
 
