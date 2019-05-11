@@ -24,6 +24,6 @@ def cancelOrder(exchange: str, orderId, symbol: str, apikey, secret): #ex: cance
 #créer un ordre
 def createOrder(exchange: str, symbol: str, amount: float, price: float, side: str, type: str):# (side= 'buy' or 'sell'), type = 'limit' or 'market'
     #binance.create_order('RVN/BTC', 'limit', 'buy', amount = 1.0, price = 0.060154)
-    exec('exchange = ccxt.' + exchange + '()')
+    exec('exchange = ccxt.' + exchange + "({'apikey':" + apikey + "'secret':" + secret + "})" )
     order = exchange.create_order(symbol, type, side, amount, price)
     return order
