@@ -24,7 +24,7 @@ class APIkeys():
             exchangeCSV = pd.read_csv(f)    #voir si je fais un chiffrement
             return exchangeCSV
 
-    def write(exchangesInfo: Df): #écriture dans le fichier
+    def write(exchangesInfo): #écriture dans le fichier
         pd.DataFrame.to_csv(self.fileName)
         
     def get(self):
