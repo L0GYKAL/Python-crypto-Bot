@@ -1,9 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TutorialGUI import Ui_Dialogue
-from accountGUI import Ui_Account
 from newsGUI import Ui_News
 from watchlistGUI import Ui_Watchlist
-from orders import Ui_Orders
+from ordersGUI import Ui_Orders
+from balanceaccount import Ui_balanceaccount
 
 class Ui_Dialog(object):
 
@@ -29,7 +29,7 @@ class Ui_Dialog(object):
 
     def openAccount(self):
         self.window = QtWidgets.QMainWindow()
-        self.ui = Ui_Account()
+        self.ui = Ui_balanceaccount()
         self.ui.setupUi(self.window)
         self.window.show()
 
