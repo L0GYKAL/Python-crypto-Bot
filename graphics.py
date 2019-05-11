@@ -4,7 +4,7 @@ import pandas as pd
 import ccxt
 import plotly.graph_objs as go
 import plotly.offline as py
-import BasicFonctionalities
+
 
 
 def chart(exchange: str, ticker: str, time, mypath: str):  # time: '1m','1d'
@@ -25,29 +25,14 @@ def chart(exchange: str, ticker: str, time, mypath: str):  # time: '1m','1d'
     plot = py.plot(fig, filename=filename, auto_open=False)
     return plot
 
-def BTC_liveGraphThread(df, filename):
-    # déclaration des constantes
-    bitmex = ccxt.bitmex({'enableRateLimit': True})
-    layout = {'title': 'BTC live price',
-              'yaxis': {'title': 'Price in USD'}}
-    # récupération des info
-    ticker = bitmex.fetchTicker('BTC/USD')
-    datetime = parse(ticker['datetime']).time()
-    price = ticker['last']
-    df.loc[len(df)] = [datetime] + [price]
-    trace = go.Scatter(x=df['time'], y=df['price'])
-    data = [trace]
-    fig = dict(data=data, layout=layout)
-    py.plot(fig, filename=filename, auto_open=False)
-    return df
     
 #inutilisé
-def BTC_liveGraph(window):
+def BTC_liveGraph():
     # déclaration des constantes
     bitmex = ccxt.bitmex({'enableRateLimit': True})
     layout = {'title': 'BTC live price',
               'yaxis': {'title': 'Price in USD'}}
-    filename = window.mypath + '/BTC_liveGraph.html'
+    filename = 'BTC_liveGraph.html'
     # récupération des premières info
     ticker = bitmex.fetchTicker('BTC/USD')
     datetime = parse(ticker['datetime']).time()
@@ -65,10 +50,10 @@ def BTC_liveGraph(window):
         data = [trace]
         fig = dict(data=data, layout=layout)
         py.plot(fig, filename=filename, auto_open=False)
-        window.htmlreader_BTCLiveGraph.reload()
 
 
 def plotsentimentAnalysis(symbol):  # return a url to a graph
+    import BasicFonctionalities
     data = BasicFonctionalities.sentimentAnalysis(symbol)
     negativScore = float()
     positivScore = float()
