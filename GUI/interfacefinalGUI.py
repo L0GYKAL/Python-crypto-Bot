@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TutorialGUI import Ui_Dialogue
-from news import Ui_News
+from newsGUI import Ui_News
 from watchlistGUI import Ui_Watchlist
 from ordersGUI import Ui_Orders
 from balanceaccountGUI import Ui_balanceaccount
