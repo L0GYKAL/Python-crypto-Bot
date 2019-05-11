@@ -1,6 +1,8 @@
 import ccxt
 import pandas as pd
 import requests
+import APIkeys_fetching
+import fetchAddresses
 
 
 def getAllSymbols():  # tous les symboles de d'adresse de cryptomonnaies supportés par l'API hybrix
@@ -66,3 +68,24 @@ def fetchExchangeBalance(exchange: str):
         total += balInBTC
 
     return total
+
+def compileBalances(self):#additione toutes les balances
+        addresses = fetchAddresses.adresses()
+        addresses = addresses.fetchAddresses.addressesList()
+        totalBTC = float()
+        for address in addresses:
+            try:
+                totalBTC += float(fetchAddress(symbol, address)) * \
+                    float(getPrice(symbol, 'BTC'))
+            except:
+                pass
+        api = APIkeys()
+        exchanges = api.get()
+        for i,exchange in exchanges.iterrows():
+            if (exchange['apikey'] != '' and exchange['secret'] != ''):
+                try:
+                    totalBTC += float(fetchExchangeBalance(exchange)) * \
+                        float(getPrice(symbol, 'BTC'))
+                except:
+                    pass
+    return totalBTC
