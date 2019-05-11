@@ -29,9 +29,15 @@ def getPrice(symbol: str, conversion: str) -> float:  # symbol: 'BTC', conversio
     return float(weightedPrice)
 
 
-def fetchExchangeBalance(exchange):
+def fetchExchangeBalance(exchange: str):
+    apikey = APIkeys_fetching()
+    df = apikey.get()
+    for i, row in df.iterrows():
+        if df.loc[i]['exchange'] == exchange:
+            apikey = df.loc[i,'apikey']
+            secret = df.loc[i,'secret']
+    exec('exchange = ccxt.' + exchange + "({'apikey':" + apikey + "'secret':" + secret + "})" )
     total = float()
-# exchange[0]=ccxtObject and exchange[1]=name
     """binance = ccxt.binance({
         'id':
         'Binance',
@@ -40,13 +46,13 @@ def fetchExchangeBalance(exchange):
         'secret':
         'yISA8ODctEZY4ncjpHIxAKar638Xe9hvjmldi7TRKxQ9L1Zcb3MvSuJMDpeIG8rs'
     })"""
-    balances = exchange[0].fetchBalance()
+    balances = exchange.fetchBalance()
     # print(balances)
     balances = pd.DataFrame(data=balances['info']['balances'])
-    markets = exchange[0].loadMarkets()
+    markets = exchange.loadMarkets()
     for i in balances.index:
         ticker = balances.loc[i, 'asset'] + '/BTC'
-        if exchange[0].markets[ticker]:
+        if exchange.markets[ticker]:
             if float(balances.loc[i, 'free']) + float(
                     balances.loc[i, 'locked']) != 0:
                 if balances.loc[i, 'asset'] == 'BTC':
