@@ -4,10 +4,11 @@ import pandas as pd
 import ccxt
 import plotly.graph_objs as go
 import plotly.offline as py
-from PyQt5 import QtWebEngineWidgets
+import BasicFonctionalities
 
 
-def chart(exchange: ccxt, ticker: str, time):  # time: '1m','1d'
+def chart(exchange: str, ticker: str, time, mypath: str):  # time: '1m','1d'
+    exec('exchange = ccxt.' + exchange + '()' )
     df = pd.DataFrame(exchange.fetchOHLCV(ticker, time))
     df[0] = pd.to_datetime(df[0], unit='ms')
     layout = {'title': ticker,
@@ -20,18 +21,33 @@ def chart(exchange: ccxt, ticker: str, time):  # time: '1m','1d'
         close=df[4])
     data = [trace]
     fig = dict(data=data, layout=layout)
-    filename = 'GUI\\plotlyGraph.html'
+    filename = mypath + '/plotlyGraph.html'
     plot = py.plot(fig, filename=filename, auto_open=False)
     return plot
 
-
-def BTC_liveGraph(QWebEngineView):
-    global plot_url  # pour afficher le graph, il faut utiliser cette URL
+def BTC_liveGraphThread(df, filename):
     # déclaration des constantes
     bitmex = ccxt.bitmex({'enableRateLimit': True})
     layout = {'title': 'BTC live price',
               'yaxis': {'title': 'Price in USD'}}
-    filename = 'GUI\\BTC_liveGraph.html'
+    # récupération des info
+    ticker = bitmex.fetchTicker('BTC/USD')
+    datetime = parse(ticker['datetime']).time()
+    price = ticker['last']
+    df.loc[len(df)] = [datetime] + [price]
+    trace = go.Scatter(x=df['time'], y=df['price'])
+    data = [trace]
+    fig = dict(data=data, layout=layout)
+    py.plot(fig, filename=filename, auto_open=False)
+    return df
+    
+#inutilisé
+def BTC_liveGraph(window):
+    # déclaration des constantes
+    bitmex = ccxt.bitmex({'enableRateLimit': True})
+    layout = {'title': 'BTC live price',
+              'yaxis': {'title': 'Price in USD'}}
+    filename = window.mypath + '/BTC_liveGraph.html'
     # récupération des premières info
     ticker = bitmex.fetchTicker('BTC/USD')
     datetime = parse(ticker['datetime']).time()
@@ -48,10 +64,12 @@ def BTC_liveGraph(QWebEngineView):
         trace = go.Scatter(x=df['time'], y=df['price'])
         data = [trace]
         fig = dict(data=data, layout=layout)
-        plot_url = py.plot(fig, filename=filename, auto_open=False)
-        QWebEngineView.reload()
-        
-def plotsentimentAnalysis(data: list):#return a url to a graph
+        py.plot(fig, filename=filename, auto_open=False)
+        window.htmlreader_BTCLiveGraph.reload()
+
+
+def plotsentimentAnalysis(symbol):  # return a url to a graph
+    data = BasicFonctionalities.sentimentAnalysis(symbol)
     negativScore = float()
     positivScore = float()
     neutralScore = float()
@@ -59,13 +77,13 @@ def plotsentimentAnalysis(data: list):#return a url to a graph
         positivScore += score['pos']
         negativScore += score['neg']
         neutralScore += score['neu']
-        
+
     trace = {
         "labels": ["Positive", "Negative", "Neutral"],
         "type": "pie",
         "values": [positivScore, negativScore, neutralScore]
     }
-    py.iplot([trace], filename='sentimentAnalysis_Pie.html')     
+    py.iplot([trace], filename='sentimentAnalysis_Pie.html')
 
 
 if __name__ == '__main__':
