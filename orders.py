@@ -1,5 +1,8 @@
 import ccxt
 import APIkeys_fetching
+from GUI import errorMessage, validationMessage
+from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 #Ordres ouverts
 def openOrders(exchange: str):
@@ -31,7 +34,14 @@ def cancelOrder(exchange: str, orderId, symbol: str): #ex: cancelOrder(binance, 
         exchange.cancelOrder(orderId, symbol)
         return str('Order canceled')
       except: #if there is an error
-        print('error')
+        import sys
+        app = QtWidgets.QApplication(sys.argv)
+        Responsemessage = QtWidgets.QDialog()
+        ui = errorMessage.Ui_Responsemessage()
+        errorMessage.ui.setupUi(Responsemessage)
+        Responsemessage.show()
+        sys.exit(app.exec_())
+
       #(ex: cancelOrder(binance, 11480381, 'MFT/BTC'))
   
 #créer un ordre
@@ -44,5 +54,14 @@ def createOrder(exchange: str, symbol: str, amount: float, price: float, side: s
             apikey = df.loc[i,'apikey']
             secret = df.loc[i,'secret']
     exec('exchange = ccxt.' + exchange + "({'apikey':" + apikey + "'secret':" + secret + "})" )
-    order = exchange.create_order(symbol, type, side, amount, price)
+    try:
+        order = exchange.create_order(symbol, type, side, amount, price)
+    except:
+        import sys
+        app = QtWidgets.QApplication(sys.argv)
+        Responsemessage = QtWidgets.QDialog()
+        ui = errorMessage.Ui_Responsemessage()
+        errorMessage.ui.setupUi(Responsemessage)
+        Responsemessage.show()
+        sys.exit(app.exec_())
     return order
