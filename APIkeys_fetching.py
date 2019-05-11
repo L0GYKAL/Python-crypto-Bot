@@ -1,9 +1,7 @@
 import pandas as pd
 import os
 
-class APIkeys:
-    global exchangesInfo, MDP
-
+class APIkeys():
     def __init__(self):
         self.fileName = 'exchangeCSV.csv'
         self.exchangesInfo = pd.DataFrame(
