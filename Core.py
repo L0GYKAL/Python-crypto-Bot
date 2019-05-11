@@ -20,21 +20,9 @@ def boot():
                 login()
                 APIobject.password(MDP)
             APIobject.run(MDP)
-        # openExchanges()
     else:
         print('No internet!')
         sys.exit()
-
-def openExchanges():
-    global exchangesDf
-    exchangeSerie = pd.Series(dtype=ccxt)
-    for i in exchangesDf.index:
-        code = 'exchangeSerie.set_value(' + i + ',' + exchangesDf.index[i] + "ccxt." + exchangesDf.Type[i] + \
-            "({" + exchangesDf.PublicKey[i] + \
-            ',' + exchangesDf.PrivateKey[i] + '}))'
-        exec(code)
-    exchangesDf.append(exchangeSerie)
-
 
 if __name__ == '__main__':
     if not sys.version >= '3.6':
